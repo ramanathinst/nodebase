@@ -20,6 +20,12 @@ export const metadata: Metadata = {
 };
 
 
+/**
+ * Application root layout that applies global fonts, document language, and wraps page content with the TRPC provider.
+ *
+ * @param children - Content to render inside the application's body; will be wrapped by the TRPCReactProvider.
+ * @returns The root HTML element containing the application body and its children.
+ */
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 
     return (
@@ -35,4 +41,3 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </html>
     );
 }
-
