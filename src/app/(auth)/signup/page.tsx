@@ -3,11 +3,7 @@ import { requiredUnAuth } from "@/lib/auth-utils"
 
 const Page = async() => {
     await requiredUnAuth();
-    return(
-        <div>
-            <SignupForm /> 
-        </div>
-    )
+    return <SignupForm /> 
 }
 
 export default Page;
