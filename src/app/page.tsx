@@ -13,6 +13,12 @@ const Page = () => {
       toast("Job Executed!")
     }
   }));
+
+  const testAi = useMutation(tprc.testAi.mutationOptions({
+     onSuccess: () => {
+      toast("Ai Job Executed!")
+    }
+  }));
   const queryClient = useQueryClient();
 
   return(
@@ -21,6 +27,10 @@ const Page = () => {
 
      <Button onClick={() => create.mutate()}>
       Create Workflow
+     </Button>
+
+     <Button disabled={testAi.isPending} onClick={() => testAi.mutate()}>
+        Test Ai
      </Button>
 
     { JSON.stringify(data, null, 2)}
