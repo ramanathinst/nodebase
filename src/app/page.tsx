@@ -1,20 +1,36 @@
-import { requiredAuth } from "@/lib/auth-utils";
-import { caller } from "@/trpc/server";
-import { LogoutButton } from "./logout";
-
-const Page = async() => {
-
-  await requiredAuth();
-  const data = await caller.getUsers();
+"use client"
+import { Button } from "@/components/ui/button";
+ import { LogoutButton } from "./logout";
+import { useTRPC } from "@/trpc/client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+ 
+const Page = () => {
+  const tprc = useTRPC();
+  const { data } = useQuery(tprc.getWorkflows.queryOptions());
+  const create = useMutation(tprc.createWorkflow.mutationOptions({
+    onSuccess: () => {
+      toast("Job Executed!")
+    }
+  }));
+  const queryClient = useQueryClient();
 
   return(
-   <div className="min-w-screen min-h-screen flex justify-center items-center gap-y-6">
+   <div className="min-w-screen min-h-screen flex justify-center items-center gap-y-6 p-6">
      Protect your server components
 
-     { JSON.stringify(data)}
+     <Button onClick={() => create.mutate()}>
+      Create Workflow
+     </Button>
+
+    { JSON.stringify(data, null, 2)}
 
     <div>
-    <LogoutButton />
+    <br />
+    <br />
+    <br />
+    <br />
+      <LogoutButton />
 
     </div>
 
