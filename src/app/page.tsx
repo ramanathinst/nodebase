@@ -36,10 +36,7 @@ const Page = () => {
     { JSON.stringify(data, null, 2)}
 
     <div>
-    <br />
-    <br />
-    <br />
-    <br />
+
       <LogoutButton />
 
     </div>
