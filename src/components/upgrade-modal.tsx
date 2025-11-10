@@ -39,7 +39,7 @@ export const UpgradeModal = ({
 
           <AlertDialogAction
             onClick={() =>
-              authClient.checkout({ slug: "Nodebase" })
+              authClient.checkout({ slug: "Pro" })
             }
           >
             Upgrade Now

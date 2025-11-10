@@ -2,8 +2,10 @@
 
 import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows"
-import { EntityContainer, EntityHeader } from "@/components/entity-components";
+import { EntityContainer, EntityHeader, EntityPagination, EntitySearch } from "@/components/entity-components";
 import { useRouter } from "next/navigation";
+import { useWorkflowsParams } from "../hooks/use-workflows-params";
+import { useEntitySearch } from "@/hooks/use-entity-search";
 
 export const WorkflowsList = () => {
     const workflows = useSuspenseWorkflows();
@@ -23,7 +25,7 @@ export const WorkflowsHeader = ({disabled}: {disabled?: boolean}) => {
     const handleCreate = () => {
         createWorkflow.mutate(undefined, {
             onSuccess: (data) => {
-              router.push(`/workflows/${data.id}`)  
+                router.push(`/workflows/${data.id}`)  
             },
             onError: (error) => {
                 handleError(error)
@@ -40,22 +42,51 @@ export const WorkflowsHeader = ({disabled}: {disabled?: boolean}) => {
                 newButtonLabel="New workflow"
                 disabled={disabled}
                 isCreating={createWorkflow.isPending}
-             />
+            />
         </>
+    )
+}
+
+export const WorkflowsSearch = () => {
+    const [params, setParams ] = useWorkflowsParams();
+    const { searchValue, onSearchChange } = useEntitySearch({
+        params,
+        setParams
+    })
+    return (
+        <EntitySearch 
+            value={searchValue}
+            onChange={onSearchChange}
+            placeholder="Search Workflow"
+        />
+    )
+}
+
+export const WorkflowsPagination = () => {
+    const workflows = useSuspenseWorkflows();
+    const [params, setParams ] = useWorkflowsParams()
+
+    return (
+        <EntityPagination 
+            disabled={workflows.isFetching}
+            page={workflows.data.page}
+            totalPages={workflows.data.totalPage}
+            onPageChange={(page) => setParams({...params, page})}
+        />
     )
 }
 
 export const WorkflowsContainer = ({children}: {children: React.ReactNode}) => {
 
     return (
-      <>
-      <EntityContainer
+        <>
+        <EntityContainer
             header={<WorkflowsHeader/>}
-            search={<></>}
-            pagination={<></>}
-       >
+            search={<WorkflowsSearch />}
+            pagination={<WorkflowsPagination/>}
+        >
         {children}
-      </EntityContainer>
-      </>
+        </EntityContainer>
+        </>
     )
 }
